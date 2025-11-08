@@ -1,0 +1,11 @@
+2025-11-08 18:31:58,500 [ERROR] Configuration file not found.
+2025-11-08 18:44:01,944 [INFO] === Honeygrid Agent Started ===
+2025-11-08 18:44:01,948 [INFO] [*] Listening on port 22
+2025-11-08 18:44:01,948 [INFO] [*] Listening on port 80
+2025-11-08 18:44:01,948 [ERROR] Failed to bind port 445: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions
+2025-11-08 18:44:01,949 [INFO] [*] Listening on port 8080
+2025-11-08 18:45:07,185 [INFO] === Honeygrid Agent Started ===
+2025-11-08 18:45:07,188 [INFO] [*] Listening on port 22
+2025-11-08 18:45:07,188 [INFO] [*] Listening on port 80
+2025-11-08 18:45:07,189 [ERROR] Failed to bind port 445: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions
+2025-11-08 18:45:07,189 [INFO] [*] Listening on port 8080

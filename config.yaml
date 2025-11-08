@@ -1,0 +1,16 @@
+# ============================
+# Honeygrid Agent Configuration
+# ============================
+
+# The endpoint where the agent sends data
+api_endpoint: "http://localhost:8000/api/v1/ingest"
+
+# List of ports to monitor (honeypot listeners)
+ports:
+  - 22      # SSH
+  - 80      # HTTP
+  - 445     # SMB
+  - 8080    # Custom web service
+
+# Optional settings
+log_level: "INFO"
