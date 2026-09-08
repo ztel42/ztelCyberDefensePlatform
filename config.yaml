@@ -1,16 +1,21 @@
-# ============================
 # Honeygrid Agent Configuration
-# ============================
+# Prefer lab-safe defaults. Override only intentionally.
 
-# The endpoint where the agent sends data
-api_endpoint: "http://localhost:8000/api/v1/ingest"
+# Prefer HTTPS. Cleartext HTTP requires allow_insecure_http: true
+api_endpoint: "https://localhost:8000/api/v1/ingest"
 
-# List of ports to monitor (honeypot listeners)
+# Prefer env HONEYGRID_API_TOKEN; this is a last-resort local lab override
+# api_token: ""
+require_api_token: true
+allow_insecure_http: false
+
+# Default localhost-only bind. Use 0.0.0.0 only on isolated honeypot hosts.
+bind_host: "127.0.0.1"
+
+# High ports avoid colliding with real SSH/HTTP/SMB on developer machines
 ports:
-  - 22      # SSH
-  - 80      # HTTP
-  - 445     # SMB
-  - 8080    # Custom web service
+  - 2222
+  - 8080
 
-# Optional settings
+max_workers: 32
 log_level: "INFO"

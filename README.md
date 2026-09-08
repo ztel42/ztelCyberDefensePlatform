@@ -1,121 +1,41 @@
 # Honeygrid Agent
 
+Lightweight honeypot listener for lab / authorized testing. Captures connection metadata and optional payloads, then forwards telemetry to a collector API.
 
-## Overview
-The **Honeygrid Agent** is a lightweight, distributed honeypot service that listens on configurable ports, logs attacker interactions, and forwards telemetry to a central Collector API for correlation and analysis. It is the first component of the **Cyber Defense Platform** — a modular cybersecurity ecosystem combining threat collection, visualization, and incident response capabilities.
+## Security defaults (read this)
 
+- Binds to **`127.0.0.1`** by default (not `0.0.0.0`).
+- Collector calls expect **HTTPS** and an **API bearer token** (`HONEYGRID_API_TOKEN` or `api_token`).
+- Concurrent handlers are capped with `max_workers`.
+- Default ports are **2222 / 8080** so they do not stomp real SSH/HTTP/SMB.
+- Runtime logs are **gitignored** — do not commit `honeygrid_agent.log`.
 
----
+Only run on systems you own or are authorized to instrument.
 
+## Setup
 
-## Features
-- Emulates multiple network services (e.g., SSH, HTTP, SMB)
-- Captures source IP, ports, timestamps, and payloads
-- Forwards data to a central Collector API (FastAPI-based)
-- Local fallback logging when the collector is unreachable
-- Configurable via `config.yaml`
-- Runs autonomously or as a Docker container
-
-
----
-
-
-## Directory Structure
-```
-honeygrid_agent/
-├── agent.py
-├── config.yaml
-├── honeygrid_agent.log
-├── requirements.txt
-└── Dockerfile
-```
-
-
----
-
-
-## Installation
-
-
-### **1. Clone the Repository**
 ```bash
-git clone https://github.com/ztel42/Honeygrid_Agent.git
-cd Honeygrid_Agent
-```
-
-
-### **2. Install Dependencies**
-```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+cp config.yaml config.local.yaml  # optional
+export HONEYGRID_API_TOKEN='your-collector-token'
+python Honeygrid_Agent.py
 ```
 
+## Config
 
-### **3. Configure the Agent**
-Create a `config.yaml` file in the root directory:
+See `config.yaml`. Notable keys:
 
+| Key | Default | Notes |
+| --- | --- | --- |
+| `bind_host` | `127.0.0.1` | Set `0.0.0.0` only on isolated lab hosts |
+| `api_endpoint` | `https://localhost:8000/api/v1/ingest` | HTTPS preferred |
+| `require_api_token` | `true` | Set false only for local dry-runs |
+| `allow_insecure_http` | `false` | Required to use `http://` endpoints |
+| `max_workers` | `32` | Caps accept-handler threads |
+| `ports` | `2222`, `8080` | Avoid privileged service ports by default |
 
-```yaml
-api_endpoint: "http://localhost:8000/api/v1/ingest"
-ports:
-- 22
-- 80
-- 445
-- 8080
-log_level: "INFO"
-```
+## Disclaimer
 
-
----
-
-
-## Usage
-Run the agent directly:
-```bash
-python agent.py
-```
-
-
-Expected output:
-```
-[*] Listening on port 22
-[*] Listening on port 80
-[*] Listening on port 445
-[*] Listening on port 8080
-```
-Logs are stored in `honeygrid_agent.log`.
-
-
----
-
-
-## Requirements
-- Python 3.8+
-- `requests`
-- `PyYAML`
-- `logging`
-
-
-To install dependencies manually:
-```bash
-pip install requests PyYAML
-```
-
-
----
-
-
-## How It Works
-1. Listens on configured ports.
-2. When a connection is received, logs source IP, payload, and timestamp.
-3. Attempts to send this data to the Collector API.
-4. Falls back to local storage (`unsent_logs.json`) if the network call fails.
-
-
----
-
-
-## Example Use Case
-You can deploy multiple Honeygrid Agents across your network to gather real-world attacker telemetry. The data can then be ingested by the **ThreatGraph Engine** to visualize attacker behavior, and combined with the **IR-Toolkit** for automated incident response.
-
-
----
+For authorized cybersecurity research and portfolio demos. Misuse on production or third-party networks is prohibited.
