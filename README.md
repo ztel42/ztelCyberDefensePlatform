@@ -39,3 +39,15 @@ See `config.yaml`. Notable keys:
 ## Disclaimer
 
 For authorized cybersecurity research and portfolio demos. Misuse on production or third-party networks is prohibited.
+
+
+## Changelog
+
+### 2026-09-07 — Security hardening
+- Default bind changed from `0.0.0.0` to `127.0.0.1` (`bind_host`)
+- Collector calls prefer HTTPS; cleartext HTTP requires `allow_insecure_http: true`
+- Collector API bearer token required (`HONEYGRID_API_TOKEN` / `api_token`)
+- Concurrent accept handlers capped via `max_workers`
+- Default ports moved to `2222` / `8080` to avoid colliding with real SSH/HTTP/SMB
+- Pinned `requirements.txt`; added `.gitignore`; removed committed `honeygrid_agent.log`
+- README security defaults and authorized-use disclaimer documented
